@@ -16,16 +16,53 @@ export const authOptions: NextAuthOptions = {
         const expectedUser = process.env.AUTH_USER
         const passwordHash = process.env.AUTH_PASSWORD_HASH
 
-        if (!expectedUser || !passwordHash) return null
-        if (!credentials?.username || !credentials?.password) return null
-        if (credentials.username !== expectedUser) return null
+        console.log("AUTH DEBUG:", {
+          expectedUser,
+          receivedUsername: credentials?.username,
+          hashExists: Boolean(passwordHash),
+          hashLength: passwordHash?.length,
+          hashPrefix: passwordHash?.slice(0, 7),
+          passwordExists: Boolean(credentials?.password),
+          passwordLength: credentials?.password?.length,
+        })
 
-        const valid = await bcrypt.compare(credentials.password, passwordHash)
-        if (!valid) return null
+        if (!expectedUser || !passwordHash) {
+          console.log("FALHA: variáveis de ambiente ausentes")
+          return null
+        }
 
-        return { id: "1", name: expectedUser }
+        if (!credentials?.username || !credentials?.password) {
+          console.log("FALHA: credenciais ausentes")
+          return null
+        }
+
+        if (credentials.username !== expectedUser) {
+          console.log("FALHA: usuário diferente")
+          return null
+        }
+
+        const valid = await bcrypt.compare(
+          credentials.password,
+          passwordHash
+        )
+
+        console.log("BCRYPT RESULT:", valid)
+
+        if (!valid) {
+          console.log("FALHA: senha inválida")
+          return null
+        }
+
+        console.log("LOGIN OK")
+
+        return {
+          id: "1",
+          name: expectedUser,
+        }
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
 }
+
+
