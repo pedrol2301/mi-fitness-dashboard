@@ -26,15 +26,18 @@ export function SleepScoreChart({ days }: { days: SleepDay[] }) {
   return (
     <div className="h-[340px] w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.15} />
-          <XAxis dataKey="date" />
-          <YAxis yAxisId="score" domain={[0, 100]} />
-          <YAxis yAxisId="hr" orientation="right" domain={["auto", "auto"]} />
-          <Tooltip />
-          <Legend />
-          <Line yAxisId="score" type="monotone" dataKey="score" name="Score" strokeWidth={2} />
-          <Line yAxisId="hr" type="monotone" dataKey="fc" name="FC média" strokeWidth={2} />
+        <LineChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+          <CartesianGrid stroke="#334155" strokeDasharray="4 4" vertical={false} opacity={0.35} />
+          <XAxis dataKey="date" tick={{ fill: "#94a3b8", fontSize: 12 }} axisLine={{ stroke: "#334155" }} tickLine={false} />
+          <YAxis yAxisId="score" domain={[0, 100]} tick={{ fill: "#94a3b8", fontSize: 12 }} axisLine={false} tickLine={false} />
+          <YAxis yAxisId="hr" orientation="right" domain={["auto", "auto"]} tick={{ fill: "#94a3b8", fontSize: 12 }} axisLine={false} tickLine={false} />
+          <Tooltip
+            contentStyle={{ backgroundColor: "#0f172a", border: "1px solid #334155", borderRadius: 12, color: "#e2e8f0" }}
+            labelStyle={{ color: "#cbd5e1" }}
+          />
+          <Legend wrapperStyle={{ color: "#cbd5e1", fontSize: 12 }} />
+          <Line yAxisId="score" type="monotone" dataKey="score" name="Score" stroke="#38bdf8" strokeWidth={3} dot={{ r: 3, fill: "#38bdf8", strokeWidth: 0 }} activeDot={{ r: 5 }} />
+          <Line yAxisId="hr" type="monotone" dataKey="fc" name="FC média" stroke="#f472b6" strokeWidth={3} dot={{ r: 3, fill: "#f472b6", strokeWidth: 0 }} activeDot={{ r: 5 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>
