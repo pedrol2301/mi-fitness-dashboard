@@ -39,10 +39,14 @@ export default async function SleepPage({
     getSleep(days),
   ])
 
-  const avgMain = average(records.map((r) => r.main_sleep_min))
-  const avgScore = average(records.map((r) => r.sleep_score))
-  const avgDeep = average(records.map((r) => r.deep_min))
-  const avgRem = average(records.map((r) => r.rem_min))
+  const orderedRecords = [...records].sort(
+    (a, b) => a.data_referencia - b.data_referencia,
+  )
+
+  const avgMain = average(orderedRecords.map((r) => r.main_sleep_min))
+  const avgScore = average(orderedRecords.map((r) => r.sleep_score))
+  const avgDeep = average(orderedRecords.map((r) => r.deep_min))
+  const avgRem = average(orderedRecords.map((r) => r.rem_min))
 
   return (
     <main className="mx-auto min-h-screen max-w-7xl px-6 py-10">
@@ -82,19 +86,19 @@ export default async function SleepPage({
       <section className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
         <h2 className="text-lg font-semibold">Duração do sono</h2>
         <p className="mt-1 text-sm text-slate-400">Sono principal e cochilos ao longo do período.</p>
-        <div className="mt-6"><SleepWeeklyChart days={records} /></div>
+        <div className="mt-6"><SleepWeeklyChart days={orderedRecords} /></div>
       </section>
 
       <section className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
         <h2 className="text-lg font-semibold">Estágios do sono</h2>
         <p className="mt-1 text-sm text-slate-400">Distribuição entre sono leve, profundo e REM.</p>
-        <div className="mt-6"><SleepStagesChart days={records} /></div>
+        <div className="mt-6"><SleepStagesChart days={orderedRecords} /></div>
       </section>
 
       <section className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
         <h2 className="text-lg font-semibold">Score e frequência cardíaca</h2>
         <p className="mt-1 text-sm text-slate-400">Relação entre qualidade do sono e FC média.</p>
-        <div className="mt-6"><SleepScoreChart days={records} /></div>
+        <div className="mt-6"><SleepScoreChart days={orderedRecords} /></div>
       </section>
 
       <section className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
