@@ -41,6 +41,42 @@ export type SleepWeekly = {
   days: SleepDay[]
 }
 
+export type HeartRateDay = {
+  date: string
+  data_referencia: number
+  avg_hr: number | null
+  min_hr: number | null
+  max_hr: number | null
+  resting_hr: number | null
+  latest_hr: number | null
+  latest_hr_time: string | null
+  abnormal_hr_count: number
+  zones: {
+    warm_up_min: number
+    fat_burning_min: number
+    aerobic_min: number
+    anaerobic_min: number
+    extreme_min: number
+  }
+}
+
+export type HeartRateResponse = {
+  period: {
+    start: string
+    end: string
+  }
+  summary: {
+    avg_hr: number | null
+    avg_min_hr: number | null
+    avg_max_hr: number | null
+    avg_resting_hr: number | null
+    latest_hr: number | null
+    latest_hr_time: string | null
+    total_abnormal_hr_count: number
+  }
+  days: HeartRateDay[]
+}
+
 async function healthFetch<T>(path: string): Promise<T> {
   const apiUrl = process.env.API_URL
   const apiToken = process.env.API_TOKEN
@@ -73,4 +109,12 @@ export function getSleep(days = 7) {
 
 export function getWeeklySleep() {
   return healthFetch<SleepWeekly>("/sleep/weekly")
+}
+
+export function getHeartRate(days = 7) {
+  return healthFetch<HeartRateResponse>(`/heart-rate?days=${days}`)
+}
+
+export function getLatestHeartRate() {
+  return healthFetch<HeartRateDay>("/heart-rate/latest")
 }
