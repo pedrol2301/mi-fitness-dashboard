@@ -19,11 +19,7 @@ export type SleepDay = {
 }
 
 export type SleepWeekly = {
-  period: {
-    start: string
-    end: string
-  }
-
+  period: { start: string; end: string }
   summary: {
     avg_total_sleep_min: number | null
     avg_main_sleep_min: number | null
@@ -37,7 +33,6 @@ export type SleepWeekly = {
     avg_min_hr: number | null
     avg_max_hr: number | null
   }
-
   days: SleepDay[]
 }
 
@@ -61,10 +56,7 @@ export type HeartRateDay = {
 }
 
 export type HeartRateResponse = {
-  period: {
-    start: string
-    end: string
-  }
+  period: { start: string; end: string }
   summary: {
     avg_hr: number | null
     avg_min_hr: number | null
@@ -77,6 +69,38 @@ export type HeartRateResponse = {
   days: HeartRateDay[]
 }
 
+export type Workout = {
+  id: number
+  type: string | null
+  category: string | null
+  recorded_at: string | null
+  start_time: string | null
+  end_time: string | null
+  duration_sec: number | null
+  calories_kcal: number | null
+  distance_m: number | null
+  avg_hr: number | null
+  min_hr: number | null
+  max_hr: number | null
+  steps: number | null
+  avg_pace: number | null
+  avg_speed: number | null
+  avg_cadence: number | null
+  training_load: number | null
+}
+
+export type WorkoutsResponse = {
+  summary: {
+    count: number
+    total_duration_sec: number | null
+    total_calories_kcal: number | null
+    total_distance_m: number | null
+    avg_hr: number | null
+    by_type: Record<string, number>
+  }
+  workouts: Workout[]
+}
+
 async function healthFetch<T>(path: string): Promise<T> {
   const apiUrl = process.env.API_URL
   const apiToken = process.env.API_TOKEN
@@ -86,9 +110,7 @@ async function healthFetch<T>(path: string): Promise<T> {
   }
 
   const response = await fetch(`${apiUrl}${path}`, {
-    headers: {
-      Authorization: `Bearer ${apiToken}`,
-    },
+    headers: { Authorization: `Bearer ${apiToken}` },
     cache: "no-store",
   })
 
@@ -117,4 +139,12 @@ export function getHeartRate(days = 7) {
 
 export function getLatestHeartRate() {
   return healthFetch<HeartRateDay>("/heart-rate/latest")
+}
+
+export function getWorkouts(limit = 50) {
+  return healthFetch<WorkoutsResponse>(`/workouts?limit=${limit}`)
+}
+
+export function getLatestWorkout() {
+  return healthFetch<Workout>("/workouts/latest")
 }
