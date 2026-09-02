@@ -74,7 +74,7 @@ export default async function DashboardPage() {
           <p className="mt-2 text-slate-400">Resumo da sua última noite e acesso às análises.</p>
         </div>
 
-        <nav className="flex gap-2">
+        <nav className="flex flex-wrap gap-2">
           <Link
             href="/sleep"
             className="rounded-lg border border-white/10 px-4 py-2 text-sm hover:bg-white/5"
@@ -86,6 +86,12 @@ export default async function DashboardPage() {
             className="rounded-lg border border-white/10 px-4 py-2 text-sm hover:bg-white/5"
           >
             Frequência cardíaca
+          </Link>
+          <Link
+            href="/workouts"
+            className="rounded-lg border border-white/10 px-4 py-2 text-sm hover:bg-white/5"
+          >
+            Treinos
           </Link>
         </nav>
       </div>
