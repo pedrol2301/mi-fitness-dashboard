@@ -107,6 +107,9 @@ function workoutName(type: string | null) {
     swimming: "Natação",
     pool_swimming: "Natação",
     strength_training: "Musculação",
+    // No export observado do Mi Fitness, o treino registrado como vôlei
+    // chega com a chave interna "foosball".
+    foosball: "Vôlei",
   }
   return type ? names[type] ?? type.replaceAll("_", " ") : "Treino"
 }
